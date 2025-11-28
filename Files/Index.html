@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline POS System - SLPDC</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body class="font-inter bg-gray-100 flex min-h-screen">
+    <aside class="sidebar bg-gradient-to-b bg-emerald-800 text-white w-64 p-4 shadow-xl flex flex-col">
+        <div class="flex flex-col items-center mb-8 mt-4">
+            <img id="shop-logo-dashboard-header" src="https://placehold.co/80x80/000000/FFFFFF?text=LOGO" alt="Shop Logo" class="h-20 w-20 rounded-full border-2 border-white mb-3 object-contain bg-white p-1">
+            <h1 id="shop-name-header" class="text-2xl font-bold tracking-wide text-center">Your Shop Name</h1>
+			----------------
+        </div>
+        <nav class="flex-grow">
+            <ul class="space-y-3">
+                <li><button class="nav-btn w-full text-left p-3 rounded-lg hover:bg-emerald-700 transition-all duration-200 flex items-center text-lg" data-section="dashboard"><i class="fas fa-home mr-3"></i>Dashboard</button></li>
+                <li><button class="nav-btn w-full text-left p-3 rounded-lg hover:bg-emerald-700 transition-all duration-200 flex items-center text-lg" data-section="billing"><i class="fas fa-cash-register mr-3"></i>Billing</button></li>
+                <li><button class="nav-btn w-full text-left p-3 rounded-lg hover:bg-emerald-700 transition-all duration-200 flex items-center text-lg" data-section="inventory"><i class="fas fa-boxes mr-3"></i>Inventory</button></li>
+                <li><button class="nav-btn w-full text-left p-3 rounded-lg hover:bg-emerald-700 transition-all duration-200 flex items-center text-lg" data-section="customers"><i class="fas fa-users mr-3"></i>Customers</button></li>
+                <li><button class="nav-btn w-full text-left p-3 rounded-lg hover:bg-emerald-700 transition-all duration-200 flex items-center text-lg" data-section="grn"><i class="fas fa-truck-loading mr-3"></i>GRN</button></li>
+                <li><button class="nav-btn w-full text-left p-3 rounded-lg hover:bg-emerald-700 transition-all duration-200 flex items-center text-lg" data-section="quotations"><i class="fas fa-file-invoice-dollar mr-3"></i>Quotations</button></li>
+                <li><button class="nav-btn w-full text-left p-3 rounded-lg hover:bg-emerald-700 transition-all duration-200 flex items-center text-lg" data-section="payments"><i class="fas fa-receipt mr-3"></i>Payments</button></li>
+                <li><button class="nav-btn w-full text-left p-3 rounded-lg hover:bg-emerald-700 transition-all duration-200 flex items-center text-lg" data-section="credit-bills"><i class="fas fa-hand-holding-usd mr-3"></i>Credit Bills</button></li>
+                <li><button class="nav-btn w-full text-left p-3 rounded-lg hover:bg-emerald-700 transition-all duration-200 flex items-center text-lg" data-section="cheque-tracking"><i class="fas fa-money-check-alt mr-3"></i>Cheques</button></li>
+                <li><button class="nav-btn w-full text-left p-3 rounded-lg hover:bg-emerald-700 transition-all duration-200 flex items-center text-lg" data-section="reports"><i class="fas fa-chart-line mr-3"></i>Reports</button></li>
+                <li><button class="nav-btn w-full text-left p-3 rounded-lg hover:bg-emerald-700 transition-all duration-200 flex items-center text-lg" data-section="settings"><i class="fas fa-cog mr-3"></i>Settings</button></li>
+            </ul>
+        </nav>
+		
+			</br><center>Software By <b>SLPDC Org</b></center>
+			<center>Hotline : 076 0822475</center>
+    </aside>
+	
+
+    <div class="flex-grow flex flex-col">
+        <header class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-4 shadow-lg flex items-center justify-center lg:hidden">
+            <h1 class="text-2xl font-bold tracking-wide">POS System</h1>
+        </header>
+        <main class="container mx-auto p-6 flex-grow">
+            <section id="dashboard-section" class="main-section hidden">
+                <!-- top nav   -->
+                <div class="top-navbar">
+                    <div class="page-title">Dashboard Overview</div>
+                    <div class="nav-actions">
+                    <i class="fas fa-user" id="logoutIcon" onclick="logout()"></i>
+                    </div>
+                </div>
+
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+                        <h3 class="text-xl font-semibold text-gray-700 mb-4 flex items-center"><i class="fas fa-chart-bar mr-3 text-emerald-500"></i>Today's Sales</h3>
+                        <p class="text-4xl font-bold text-blue-600" id="dashboard-today-sales">LKR 0.00</p>
+                        <p class="text-sm text-gray-500 mt-2">Total sales for the current day.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+                        <h3 class="text-xl font-semibold text-gray-700 mb-4 flex items-center"><i class="fas fa-boxes mr-3 text-green-500"></i>Total Inventory Items</h3>
+                        <p class="text-4xl font-bold text-green-600" id="dashboard-inventory-count">0</p>
+                        <p class="text-sm text-gray-500 mt-2">Number of unique items in stock.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+                        <h3 class="text-xl font-semibold text-gray-700 mb-4 flex items-center"><i class="fas fa-credit-card mr-3 text-red-500"></i>Outstanding Credit</h3>
+                        <p class="text-4xl font-bold text-red-600" id="dashboard-outstanding-credit">LKR 0.00</p>
+                        <p class="text-sm text-gray-500 mt-2">Total amount due from credit customers.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200 lg:col-span-3">
+                        <h3 class="text-xl font-semibold text-gray-700 mb-4 flex items-center"><i class="fas fa-history mr-3 text-purple-500"></i>Recent Transactions</h3>
+                        <div id="dashboard-recent-transactions" class="overflow-x-auto">
+                            <p class="text-gray-500">No recent transactions.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="billing-section" class="main-section hidden">
+                 <!-- top nav   -->
+                 <div class="top-navbar">
+                    <div class="page-title">New Sales</div>
+                    <div class="nav-actions">
+                        <span class="icon" onclick="logout()">👤</span>
+                    </div>
+                </div>
+
+
+
+                <!--next prev window--> 
+                <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-200 grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="col-span-full space-y-6">
+
+                        <div class="step" id="step1">
+                             <div class="p-5 border border-gray-200 rounded-lg bg-gray-50">
+                                <h3 class="text-xl font-semibold text-gray-700 mb-4 flex items-center"><i class="fas fa-user-tag mr-2 text-emerald-500"></i>Customer Details</h3>
+                                <div class="mb-4">
+                                    <label for="customer-type" class="block text-gray-700 font-medium mb-2">Customer Type</label>
+                                    <select id="customer-type" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200">
+                                        <option value="walking">Walking Customer</option>
+                                        <option value="registered">Registered Customer</option>
+                                    </select>
+                                </div>
+                                <div id="walking-customer-details" class="space-y-4">
+                                    <div>
+                                        <label for="walking-customer-name" class="block text-gray-700 font-medium mb-2">Name (Optional)</label>
+                                        <input type="text" id="walking-customer-name" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" placeholder="Customer Name">
+                                    </div>
+                                    <div>
+                                        <label for="walking-customer-address" class="block text-gray-700 font-medium mb-2">Address (Optional)</label>
+                                        <input type="text" id="walking-customer-address" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" placeholder="Customer Address">
+                                    </div>
+                                    <div>
+                                        <label for="walking-customer-tp" class="block text-gray-700 font-medium mb-2">TP No (Optional)</label>
+                                        <input type="text" id="walking-customer-tp" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" placeholder="Telephone Number">
+                                    </div>
+                                </div>
+                                <div id="registered-customer-select" class="hidden">
+                                    <label for="registered-customer-dropdown" class="block text-gray-700 font-medium mb-2">Select Registered Customer</label>
+                                    <select id="registered-customer-dropdown" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200">
+                                        <option value="">-- Select Customer --</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <button onclick="nextStep()" class="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md flex items-center">Next</button>
+                            </div>
+                        </div>
+
+                        <div class="step" id="step2" style="display:none">
+                            <div class="p-5 border border-gray-200 rounded-lg bg-gray-50">
+                                <h3 class="text-xl font-semibold text-gray-700 mb-4 flex items-center"><i class="fas fa-truck-ramp-box mr-2 text-green-500"></i>Distribution Channel</h3>
+                                <div>
+                                    <label for="distribution-channel-dropdown" class="block text-gray-700 font-medium mb-2">Select Channel</label>
+                                    <select id="distribution-channel-dropdown" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200">
+                                        <option value="main">Main Shop</option>
+                                    </select>
+                                </div>
+                            </div>
+                    
+                            <div class="flex space-x-4">
+                                <button onclick="prevStep()" class="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md flex items-center">Previous</button>
+                                <button onclick="nextStep()" class="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md flex items-center">Next</button>
+                            </div>
+                        </div>
+                
+
+                        <div class="step" id="step3" style="display:none">
+
+                            <div class="p-5 border border-gray-200 rounded-lg bg-gray-50">
+                                <h3 class="text-xl font-semibold text-gray-700 mb-4 flex items-center"><i class="fas fa-barcode mr-2 text-purple-500"></i>Add Items</h3>
+                                <div class="flex space-x-3 mb-4">
+                                    <input type="text" id="barcode-input" class="flex-grow p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" placeholder="Scan Barcode or Enter Item Code">
+                                    <button id="add-item-by-barcode-btn" class="px-5 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md">Add</button>
+                                </div>
+                                <div class="flex space-x-3 mb-4">
+                                    <input type="text" id="keyword-search-input" class="flex-grow p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" placeholder="Search by Keyword (Item Name)">
+                                    <button id="search-item-btn" class="px-5 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md">Search</button>
+                                </div>
+                                <div id="search-results" class="mb-4 max-h-48 overflow-y-auto border border-gray-200 rounded-lg bg-white hidden">
+                                    </div>
+                                <div class="flex space-x-3">
+                                    <input type="text" id="manual-item-code" class="w-1/3 p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" placeholder="Item Code">
+                                    <input type="text" id="manual-item-name" class="w-1/3 p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" placeholder="Item Name">
+                                    <input type="number" id="manual-item-price" class="w-1/6 p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" placeholder="Price" min="0" step="0.01">
+                                    <input type="number" id="manual-item-qty" class="w-1/6 p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" value="1" min="1">
+                                    <button id="add-manual-item-btn" class="px-5 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md">Add</button>
+                                </div>
+                            </div >
+                            <div class="flex space-x-4">
+                                <button onclick="prevStep()" class="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md flex items-center">Previous</button>
+                                <button onclick="nextStep()" class="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md flex items-center">Next</button>
+                            </div>
+                        </div>
+
+                        <div class="step" id="step4" style="display:none">
+
+                             <div class="p-5 border border-gray-200 rounded-lg bg-gray-50">
+                                <h3 class="text-xl font-semibold text-gray-700 mb-4 flex items-center"><i class="fas fa-shopping-cart mr-2 text-orange-500"></i>Shopping Cart</h3>
+                                <div id="cart-items" class="max-h-64 overflow-y-auto mb-4 border border-gray-200 rounded-lg bg-white p-2">
+                                    <p class="text-gray-500 text-center py-4">Cart is empty.</p>
+                                </div>
+                                <div class="flex justify-between items-center text-lg font-semibold text-gray-800 mb-2">
+                                    <span>Sub Total:</span>
+                                    <span id="cart-subtotal">LKR 0.00</span>
+                                </div>
+                                <div class="flex items-center mb-4">
+                                    <label for="discount-type" class="mr-3 text-gray-700 font-medium">Discount:</label>
+                                    <select id="discount-type" class="p-2 border border-gray-300 rounded-lg mr-2 focus:ring-emerald-500 focus:border-emerald-500 transition duration-200">
+                                        <option value="lkr">LKR</option>
+                                        <option value="percent">%</option>
+                                    </select>
+                                    <input type="number" id="discount-value" class="w-28 p-2 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" value="0" min="0">
+                                </div>
+                                <div class="flex justify-between items-center text-2xl font-bold text-gray-900 border-t pt-4 mt-4">
+                                    <span>Grand Total:</span>
+                                    <span id="cart-grandtotal">LKR 0.00</span>
+                                </div>
+                            </div>
+                            <div class="flex space-x-4">
+                                <button onclick="prevStep()" class="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md flex items-center">Previous</button>
+                                <button onclick="nextStep()" class="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md flex items-center">Next</button>
+                            </div>
+                        </div>
+
+                        <div class="step" id="step5" style="display:none">
+
+                            <div class="p-5 border border-gray-200 rounded-lg bg-gray-50">
+                                <h3 class="text-xl font-semibold text-gray-700 mb-4 flex items-center"><i class="fas fa-money-bill-wave mr-2 text-teal-500"></i>Payment Method</h3>
+                                <select id="payment-method" class="w-full p-3 border border-gray-300 rounded-lg mb-4 focus:ring-emerald-500 focus:border-emerald-500 transition duration-200">
+                                    <option value="cash">Cash</option>
+                                    <option value="card">Card</option>
+                                    <option value="cheque">Cheque</option>
+                                    <option value="bank">Bank Transfer</option>
+                                    <option value="online">Online Payment</option>
+                                    <option value="credit">Credit</option>
+                                </select>
+                                <div id="payment-reference-container" class="hidden mb-4">
+                                    <label for="payment-reference" class="block text-gray-700 font-medium mb-2">Reference No.</label>
+                                    <input type="text" id="payment-reference" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" placeholder="Enter reference number">
+                                </div>
+                                <div id="cheque-details-container" class="hidden mb-4 space-y-3">
+                                    <div>
+                                        <label for="cheque-number" class="block text-gray-700 font-medium mb-2">Cheque Number</label>
+                                        <input type="text" id="cheque-number" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" placeholder="Cheque Number">
+                                    </div>
+                                    <div>
+                                        <label for="cheque-bank" class="block text-gray-700 font-medium mb-2">Bank</label>
+                                        <input type="text" id="cheque-bank" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" placeholder="Bank Name">
+                                    </div>
+                                    <div>
+                                        <label for="cheque-due-date" class="block text-gray-700 font-medium mb-2">Due Date</label>
+                                        <input type="date" id="cheque-due-date" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="flex space-x-4">
+                                <button onclick="prevStep()" class="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md flex items-center">Previous</button>
+                                <button id="process-bill-btn" class="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md flex items-center">Process Bill</button>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+               
+            </section>
+
+            <section id="inventory-section" class="main-section hidden">
+                <!-- top nav   -->
+                 <div class="top-navbar">
+                    <div class="page-title">Inventory Management</div>
+                    <div class="nav-actions">
+                    <span class="icon" onclick="logout()">👤</span>
+                    </div>
+                </div>
+
+
+                <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-200">
+                    <h3 class="text-2xl font-semibold text-gray-700 mb-6 flex items-center"><i class="fas fa-plus-circle mr-3 text-emerald-500"></i>Add New Item</h3>
+                    <form id="add-inventory-item-form" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <div>
+                            <label for="item-code" class="block text-gray-700 font-medium mb-2">Item Code / Barcode</label>
+                            <input type="text" id="item-code" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" placeholder="Unique Item Code" required>
+                        </div>
+                        <div>
+                            <label for="item-name" class="block text-gray-700 font-medium mb-2">Item Name</label>
+                            <input type="text" id="item-name" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" placeholder="Product Name" required>
+                        </div>
+                        <div>
+                            <label for="item-description" class="block text-gray-700 font-medium mb-2">Description (Optional)</label>
+                            <textarea type="text" id="item-description" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" rows="2" placeholder="Brief description of the item"></textarea>
+                        </div>
+                        <div>
+                            <label for="item-price" class="block text-gray-700 font-medium mb-2">Unit Price (LKR)</label>
+                            <input type="number" id="item-price" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" placeholder="e.g., 1500.00" min="0" step="0.01" required>
+                        </div>
+                        <div>
+                            <label for="item-stock" class="block text-gray-700 font-medium mb-2">Initial Stock Quantity</label>
+                            <input type="number" id="item-stock" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" placeholder="e.g., 100" min="0" required>
+                        </div>
+                        <div>
+                            <label for="item-threshold" class="block text-gray-700 font-medium mb-2">Threshold </label>
+                            <input type="number" id="item-threshold" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" placeholder="e.g., 100" min="0" required>
+                        </div>
+                        <div class="md:col-span-2 flex justify-end">
+                            <button type="submit" class="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md flex items-center"><i class="fas fa-save mr-2"></i>Save Item</button>
+                        </div>
+                    </form>
+
+                    <h3 class="text-2xl font-semibold text-gray-700 mb-6 flex items-center"><i class="fas fa-list-alt mr-3 text-green-500"></i>Current Inventory</h3>
+                    <div class="overflow-x-auto rounded-lg shadow-md border border-gray-200">
+
+                        <!-- Button to open the modal -->
+                        
+                        <button onclick="openInventoryModal()" class="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md flex items-center">Current Inventory</button>
+
+                       <div id="inventoryModal" class="modal">
+                            <div class="modal-content">
+                                <span class="close" onclick="closeInventoryModal()">&times;</span>
+                                    <table class="min-w-full bg-white">
+                                        <thead class="bg-gray-100 border-b border-gray-200">
+                                            <tr>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Item Code</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Item Name</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Price (LKR)</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Stock</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Threshold</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="inventory-list">
+                                            <tr><td colspan="5" class="text-center py-4 text-gray-500">No items in inventory.</td></tr>
+                                        </tbody>
+                                    </table>   
+                                </div>
+                            </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <section id="customers-section" class="main-section hidden">
+                 <!-- top nav   -->
+                 <div class="top-navbar">
+                    <div class="page-title">Customer Management</div>
+                    <div class="nav-actions">
+                    <span class="icon" onclick="logout()">👤</span>
+                    </div>
+                </div>
+
+
+                <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-200">
+                    <h3 class="text-2xl font-semibold text-gray-700 mb-6 flex items-center"><i class="fas fa-user-plus mr-3 text-emerald-500"></i>Add New Customer</h3>
+                    <form id="add-customer-form" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <div>
+                            <label for="customer-id" class="block text-gray-700 font-medium mb-2">Customer ID (Auto-generated)</label>
+                            <input type="text" id="customer-id" class="w-full p-3 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed" disabled placeholder="Auto-generated">
+                        </div>
+                        <div>
+                            <label for="customer-reg-name" class="block text-gray-700 font-medium mb-2">Customer Name</label>
+                            <input type="text" id="customer-reg-name" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" placeholder="Customer's Full Name" required>
+                        </div>
+                        <div>
+                            <label for="customer-reg-address" class="block text-gray-700 font-medium mb-2">Address</label>
+                            <input type="text" id="customer-reg-address" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" placeholder="Customer Address">
+                        </div>
+                        <div>
+                            <label for="customer-reg-tp" class="block text-gray-700 font-medium mb-2">Telephone Number</label>
+                            <input type="text" id="customer-reg-tp" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" placeholder="e.g., 0771234567">
+                        </div>
+                        <div>
+                            <label for="customer-credit-limit" class="block text-gray-700 font-medium mb-2">Credit Limit (LKR)</label>
+                            <input type="number" id="customer-credit-limit" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" placeholder="e.g., 50000.00" min="0" step="0.01" value="0">
+                        </div>
+                        <div class="md:col-span-2 flex justify-end">
+                            <button type="submit" class="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md flex items-center"><i class="fas fa-user-plus mr-2"></i>Add Customer</button>
+                        </div>
+                    </form>
+
+                    <h3 class="text-2xl font-semibold text-gray-700 mb-6 flex items-center"><i class="fas fa-users mr-3 text-green-500"></i>Registered Customers</h3>
+                    <div class="overflow-x-auto rounded-lg shadow-md border border-gray-200">
+                        
+                         <!-- Button to open the modal -->
+                        <button onclick="openModal()" class="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md flex items-center">View Registered Customers</button>
+
+                        <div id="customerModal" class="modal">
+                            <div class="modal-content">
+                                <span class="close" onclick="closeModal()">&times;</span>
+                                <!-- Your Table --> 
+                                    <table class="min-w-full bg-white">
+                                        <thead class="bg-gray-100 border-b border-gray-200">
+                                            <tr>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">ID</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Name</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Address</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">TP No</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Credit Limit</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="customer-list">
+                                            <tr><td colspan="6" class="text-center py-4 text-gray-500">No registered customers.</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="grn-section" class="main-section hidden">
+                 <!-- top nav   -->
+                 <div class="top-navbar">
+                    <div class="page-title">Good Received Note(GRN)</div>
+                    <div class="nav-actions">
+                    <span class="icon" onclick="logout()">👤</span>
+                    </div>
+                </div>
+
+
+                <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-200">
+                    <h3 class="text-2xl font-semibold text-gray-700 mb-6 flex items-center"><i class="fas fa-file-invoice mr-3 text-emerald-500"></i>Create New GRN</h3>
+                    <form id="create-grn-form" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <div>
+                            <label for="grn-supplier" class="block text-gray-700 font-medium mb-2">Supplier Name</label>
+                            <input type="text" id="grn-supplier" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" placeholder="Supplier Name" required>
+                        </div>
+                        <div>
+                            <label for="grn-date" class="block text-gray-700 font-medium mb-2">GRN Date</label>
+                            <input type="date" id="grn-date" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" required>
+                        </div>
+                        <div class="md:col-span-2">
+                            <h4 class="text-xl font-semibold text-gray-700 mb-4 flex items-center"><i class="fas fa-boxes mr-2 text-purple-500"></i>Items Received</h4>
+                            <div class="flex space-x-3 mb-4">
+                                <input type="text" id="grn-item-code" class="flex-grow p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" placeholder="Item Code">
+                                <input type="number" id="grn-item-qty" class="w-32 p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" placeholder="Quantity" min="1" value="1">
+                                <button type="button" id="add-grn-item-btn" class="px-5 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md">Add Item</button>
+                            </div>
+                            <div id="grn-items-list" class="max-h-48 overflow-y-auto border border-gray-200 rounded-lg bg-white p-2">
+                                <p class="text-gray-500 text-center py-4">No items added to GRN.</p>
+                            </div>
+                        </div>
+                        <div class="md:col-span-2 flex justify-end">
+                            <button type="submit" class="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md flex items-center">Process GRN</button>
+                        </div>
+                    </form>
+
+                    <h3 class="text-2xl font-semibold text-gray-700 mb-6 flex items-center"><i class="fas fa-list-alt mr-3 text-green-500"></i>GRN History</h3>
+                    <div class="overflow-x-auto rounded-lg shadow-md border border-gray-200">
+                         <!-- Button to open the modal -->
+                        <button onclick="openGRNModal()" class="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md flex items-center">View GRN History</button>
+
+                        <div id="grnModal" class="modal">
+                            <div class="modal-content">
+                                <span class="close" onclick="closeGRNModal()">&times;</span>
+                                     <table class="min-w-full bg-white">
+                                        <thead class="bg-gray-100 border-b border-gray-200">
+                                            <tr>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">GRN ID</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Date</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Supplier</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Items</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="grn-history-list">
+                                            <tr><td colspan="5" class="text-center py-4 text-gray-500">No GRN records.</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="quotations-section" class="main-section hidden">
+                 <!-- top nav   -->
+                 <div class="top-navbar">
+                    <div class="page-title">Quotations</div>
+                    <div class="nav-actions">
+                    <span class="icon" onclick="logout()">👤</span>
+                    </div>
+                </div>
+
+
+                <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-200">
+                    <h3 class="text-2xl font-semibold text-gray-700 mb-6 flex items-center"><i class="fas fa-file-alt mr-3 text-emerald-500"></i>Create New Quotation</h3>
+                    <form id="create-quotation-form" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <div>
+                            <label for="quotation-customer-name" class="block text-gray-700 font-medium mb-2">Customer Name</label>
+                            <input type="text" id="quotation-customer-name" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" placeholder="Customer Name" required>
+                        </div>
+                        <div>
+                            <label for="quotation-date" class="block text-gray-700 font-medium mb-2">Quotation Date</label>
+                            <input type="date" id="quotation-date" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" required>
+                        </div>
+                        <div class="md:col-span-2">
+                            <h4 class="text-xl font-semibold text-gray-700 mb-4 flex items-center"><i class="fas fa-boxes mr-2 text-purple-500"></i>Items for Quotation</h4>
+                            <div class="flex space-x-3 mb-4">
+                                <input type="text" id="quotation-item-code" class="flex-grow p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" placeholder="Item Code">
+                                <input type="number" id="quotation-item-qty" class="w-32 p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" placeholder="Quantity" min="1" value="1">
+                                <button type="button" id="add-quotation-item-btn" class="px-5 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md">Add Item</button>
+                            </div>
+                            <div id="quotation-items-list" class="max-h-48 overflow-y-auto border border-gray-200 rounded-lg bg-white p-2">
+                                <p class="text-gray-500 text-center py-4">No items added to quotation.</p>
+                            </div>
+                        </div>
+                        <div class="md:col-span-2 flex justify-end">
+                            <button type="submit" class="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md flex items-center"><i class="fas fa-plus mr-2"></i>Generate Quotation</button>
+                        </div>
+                    </form>
+
+                    <h3 class="text-2xl font-semibold text-gray-700 mb-6 flex items-center"><i class="fas fa-list-alt mr-3 text-green-500"></i>Quotation History</h3>
+                    <div class="overflow-x-auto rounded-lg shadow-md border border-gray-200">
+
+                        <!-- Button to open the modal -->
+                        <button onclick="openQuotationModal()" class="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md flex items-center">View Quotation History</button>
+
+                        <div id="quotationModal" class="modal">
+                            <div class="modal-content">
+                                <span class="close" onclick="closeQuotationModal()">&times;</span>
+                                    <table class="min-w-full bg-white">
+                                        <thead class="bg-gray-100 border-b border-gray-200">
+                                            <tr>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Quotation ID</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Date</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Customer</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Items</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Total</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="quotation-history-list">
+                                            <tr><td colspan="6" class="text-center py-4 text-gray-500">No quotation records.</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                          </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="payments-section" class="main-section hidden">
+                 <!-- top nav   -->
+                 <div class="top-navbar">
+                    <div class="page-title">Payment Records</div>
+                    <div class="nav-actions">
+                    <span class="icon" onclick="logout()">👤</span>
+                    </div>
+                </div>
+
+
+                <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-200">
+                    <h3 class="text-2xl font-semibold text-gray-700 mb-6 flex items-center"><i class="fas fa-search mr-3 text-emerald-500"></i>Search Payments</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                        <div>
+                            <label for="payment-search-start-date" class="block text-gray-700 font-medium mb-2">Start Date</label>
+                            <input type="date" id="payment-search-start-date" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200">
+                        </div>
+                        <div>
+                            <label for="payment-search-end-date" class="block text-gray-700 font-medium mb-2">End Date</label>
+                            <input type="date" id="payment-search-end-date" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200">
+                        </div>
+                        <div class="flex items-end">
+                            <button id="search-payments-btn" class="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md flex items-center"><i class="fas fa-filter mr-2"></i>Filter Payments</button>
+                        </div>
+                    </div>
+
+                    <h3 class="text-2xl font-semibold text-gray-700 mb-6 flex items-center"><i class="fas fa-list-alt mr-3 text-green-500"></i>All Payments</h3>
+                    <div class="overflow-x-auto rounded-lg shadow-md border border-gray-200">
+                        
+                         <!-- Button to open the modal -->
+                        <button onclick="openPaymentModal()" class="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md flex items-center">View All Payments</button>
+                        <div id="paymentModal" class="modal">
+                            <div class="modal-content">
+                                <span class="close" onclick="closePaymentModal()">&times;</span>
+                                    <table class="min-w-full bg-white">
+                                        <thead class="bg-gray-100 border-b border-gray-200">
+                                            <tr>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Payment ID</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Date</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Bill ID</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Amount (LKR)</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Method</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Reference</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="payment-records-list">
+                                            <tr><td colspan="7" class="text-center py-4 text-gray-500">No payment records.</td></tr>
+                                        </tbody>
+                                    </table>
+                              </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="credit-bills-section" class="main-section hidden">
+                 <!-- top nav   -->
+                 <div class="top-navbar">
+                    <div class="page-title">Credit Bills Management</div>
+                    <div class="nav-actions">
+                    <span class="icon" onclick="logout()">👤</span>
+                    </div>
+                </div>
+
+
+                <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-200">
+                    <h3 class="text-2xl font-semibold text-gray-700 mb-6 flex items-center"><i class="fas fa-search mr-3 text-emerald-500"></i>Filter Credit Bills</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                        <div>
+                            <label for="credit-bill-search-start-date" class="block text-gray-700 font-medium mb-2">Start Date</label>
+                            <input type="date" id="credit-bill-search-start-date" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200">
+                        </div>
+                        <div>
+                            <label for="credit-bill-search-end-date" class="block text-gray-700 font-medium mb-2">End Date</label>
+                            <input type="date" id="credit-bill-search-end-date" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200">
+                        </div>
+                        <div class="flex items-end">
+                            <button id="search-credit-bills-btn" class="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md flex items-center"><i class="fas fa-filter mr-2"></i>Filter Bills</button>
+                        </div>
+                    </div>
+
+                    <h3 class="text-2xl font-semibold text-gray-700 mb-6 flex items-center"><i class="fas fa-list-alt mr-3 text-green-500"></i>All Credit Bills</h3>
+                    <div class="overflow-x-auto rounded-lg shadow-md border border-gray-200">
+                         <!-- Button to open the modal -->
+                        <button onclick="openCreditBillsModal()" class="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md flex items-center">View All Credit Bills</button>
+                        <div id="creditBillsModal" class="modal">
+                            <div class="modal-content">
+                                <span class="close" onclick="closeCreditBillsModal()">&times;</span>
+                                    <table class="min-w-full bg-white">
+                                        <thead class="bg-gray-100 border-b border-gray-200">
+                                            <tr>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Bill ID</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Customer</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Bill Date</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Total (LKR)</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Paid (LKR)</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Due (LKR)</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Due Date</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Status</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="credit-bills-list">
+                                            <tr><td colspan="9" class="text-center py-4 text-gray-500">No credit bills.</td></tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="cheque-tracking-section" class="main-section hidden">
+            
+                 <!-- top nav   -->
+                 <div class="top-navbar">
+                    <div class="page-title">Cheque Tracking System</div>
+                    <div class="nav-actions">
+                    <span class="icon" onclick="logout()">👤</span>
+                    </div>
+                </div>
+
+
+                <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-200">
+                    <h3 class="text-2xl font-semibold text-gray-700 mb-6 flex items-center"><i class="fas fa-search mr-3 text-emerald-500"></i>Filter Cheques</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                        <div>
+                            <label for="cheque-search-start-date" class="block text-gray-700 font-medium mb-2">Start Date</label>
+                            <input type="date" id="cheque-search-start-date" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200">
+                        </div>
+                        <div>
+                            <label for="cheque-search-end-date" class="block text-gray-700 font-medium mb-2">End Date</label>
+                            <input type="date" id="cheque-search-end-date" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200">
+                        </div>
+                        <div class="flex items-end">
+                            <button id="search-cheques-btn" class="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md flex items-center"><i class="fas fa-filter mr-2"></i>Filter Cheques</button>
+                        </div>
+                    </div>
+
+                    <h3 class="text-2xl font-semibold text-gray-700 mb-6 flex items-center"><i class="fas fa-list-alt mr-3 text-green-500"></i>All Cheques</h3>
+                    <div class="overflow-x-auto rounded-lg shadow-md border border-gray-200">
+                         <!--button-->
+                        <button onclick="openChequeModal()" class="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md flex items-center">View All Cheques</button>
+                        <div id="ChequeModal" class="modal">
+                            <div class="modal-content">
+                                <span class="close" onclick="closeChequeModal()">&times;</span>
+                                    <table class="min-w-full bg-white">
+                                        <thead class="bg-gray-100 border-b border-gray-200">
+                                            <tr>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Cheque ID</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Bill ID</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Number</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Bank</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Amount (LKR)</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Due Date</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Status</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="cheque-list">
+                                            <tr><td colspan="8" class="text-center py-4 text-gray-500">No cheque records.</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="reports-section" class="main-section hidden">
+                 <!-- top nav   -->
+                 <div class="top-navbar">
+                    <div class="page-title">Reports</div>
+                    <div class="nav-actions">
+                    <span class="icon" onclick="logout()">👤</span>
+                    </div>
+                </div>
+
+
+                <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-200">
+                    <h3 class="text-2xl font-semibold text-gray-700 mb-6 flex items-center"><i class="fas fa-calendar-alt mr-3 text-emerald-500"></i>Select Date Range</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                        <div>
+                            <label for="report-start-date" class="block text-gray-700 font-medium mb-2">Start Date</label>
+                            <input type="date" id="report-start-date" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200">
+                        </div>
+                        <div>
+                            <label for="report-end-date" class="block text-gray-700 font-medium mb-2">End Date</label>
+                            <input type="date" id="report-end-date" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200">
+                        </div>
+                        <div class="flex items-end">
+                            <button id="generate-reports-btn" class="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md flex items-center"><i class="fas fa-file-excel mr-2"></i>Generate Reports</button>
+                        </div>
+                    </div>
+
+                    <div id="report-summary" class="mb-8 p-5 border border-gray-200 rounded-lg bg-gray-50 hidden">
+                        <h4 class="text-xl font-semibold text-gray-700 mb-4">Report Summary</h4>
+                        <p><strong>Total Sales:</strong> <span id="report-total-sales">LKR 0.00</span></p>
+                        <p><strong>Total Credit Sales:</strong> <span id="report-total-credit-sales">LKR 0.00</span></p>
+                        <p><strong>Total Payments Collected:</strong> <span id="report-total-payments">LKR 0.00</span></p>
+                        <p><strong>Total GRN Value:</strong> <span id="report-total-grn-value">LKR 0.00</span></p>
+                        <p><strong>Current Inventory Value:</strong> <span id="report-current-inventory-value">LKR 0.00</span></p>
+                    </div>
+
+                <h3 class="text-2xl font-semibold text-gray-700 mb-6 flex items-center">
+                    <i class="fas fa-download mr-3 text-green-500"></i>Reports
+                </h3>
+
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+
+                    <!-- Sales Report -->
+                    <div style="display: flex; gap: 10px;">
+
+                        <button id="view-sales-report" class="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md flex items-center justify-center">
+                            <i class="fas fa-eye mr-2"></i>View
+                        </button>
+
+                        <button id="download-sales-report" class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-emerald-1000 transition duration-200 shadow-md flex items-center justify-center width: 200px">
+                            <i class="fas fa-file-excel mr-2"></i>Download Sales (Excel)
+                        </button>
+                    </div>
+
+                    <!-- Inventory Report -->
+                    <div style="display: flex; gap: 10px;">
+
+                        <button id="view-inventory-report" class="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md flex items-center justify-center">
+                            <i class="fas fa-eye mr-2"></i>View
+                        </button>
+
+                     <button id="download-inventory-report" class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-200 shadow-md flex items-center justify-center">
+                        <i class="fas fa-file-excel mr-2"></i>Download Inventory (Excel)
+                     </button>
+                    </div>
+
+                    <!-- Credit Report -->
+                    <div style="display: flex; gap: 10px;">
+
+                        <button id="view-credit-report" class="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md flex items-center justify-center">
+                            <i class="fas fa-eye mr-2"></i>View
+                        </button>
+
+                        <button id="download-credit-report" class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-200 shadow-md flex items-center justify-center">
+                            <i class="fas fa-file-excel mr-2"></i>Download Credit (Excel)
+                        </button>
+                    </div>
+
+                    <!-- GRN Report -->
+                    <div style="display: flex; gap: 10px;">
+                        <button id="view-grn-report" class="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md flex items-center justify-center">
+                            <i class="fas fa-eye mr-2"></i>View
+                        </button>
+
+                        <button id="download-grn-report" class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-200 shadow-md flex items-center justify-center">
+                            <i class="fas fa-file-excel mr-2"></i>Download GRN (Excel)
+                        </button>
+                    </div>
+
+                    <!-- Payments Report -->
+                    <div style="display: flex; gap: 10px;">
+                        <button id="view-payments-report" class="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md flex items-center justify-center">
+                            <i class="fas fa-eye mr-2"></i>View
+                        </button>
+
+                        <button id="download-payments-report" class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-200 shadow-md flex items-center justify-center ">
+                            <i class="fas fa-file-excel mr-2"></i>Download Payments (Excel)
+                        </button>
+                    </div>
+
+                </div>
+
+                </div>
+            </section>
+
+            <section id="settings-section" class="main-section hidden">
+                 <!-- top nav   -->
+                 <div class="top-navbar">
+                    <div class="page-title">Shop Settings & Customization</div>
+                    <div class="nav-actions">
+                    <span class="icon" onclick="logout()">👤</span>
+                    </div>
+                </div>
+
+                
+                <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-200">
+                    <!--Button1-->
+                    <div style="display: flex; align-items: flex-start; gap: 10px;">
+                        <h3 class="margin-left: 10px margin-top: 30px  margin-bottom: 10px  display: flex align-items: center gap: 10px text-2xl font-semibold text-gray-700 mb-6 flex items-center"><i class="fas fa-store mr-3 text-emerald-500"></i>Shop Details</h3>
+                        <button onclick="openShopDetailModal()" style="padding: 4px 10px; font-size: 15px;" class="margin-bottom: 20pxmargin: 5px 0 px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md flex items-center">+</button>
+                    </div>
+                    <div id="ShopDetailModal" class="modal">
+                        <div class="modal-content">
+                            <span class="close" onclick="closeShopDetailModal()">&times;</span>
+                                <form id="shop-details-form" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                                    <div>
+                                        <label for="shop-name" class="block text-gray-700 font-medium mb-2">Shop Name</label>
+                                        <input type="text" id="shop-name" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" placeholder="Your Shop Name" required>
+                                    </div>
+                                    <div>
+                                        <label for="shop-address" class="block text-gray-700 font-medium mb-2">Address</label>
+                                        <input type="text" id="shop-address" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" placeholder="Shop Address" required>
+                                    </div>
+                                    <div>
+                                        <label for="shop-tp" class="block text-gray-700 font-medium mb-2">Telephone Number</label>
+                                        <input type="text" id="shop-tp" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" placeholder="Shop Telephone Number" required>
+                                    </div>
+                                    <div class="md:col-span-2 flex justify-end">
+                                        <button type="submit" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200 shadow-md flex items-center"><i class="fas fa-save mr-2"></i>Save Shop Details</button>
+                                    </div>
+                                </form>
+                            </div>
+                    </div>
+
+                    
+                    
+                         <!--button2-->
+                         <div style="display: flex; align-items: flex-start; gap: 10px;">
+
+                            <h3 class="margin-left: 10px margin-top: 30px  margin-bottom: 10px   display: flex align-items: center gap: 10px text-2xl font-semibold text-gray-700 mb-6 flex items-center"><i class="fas fa-image mr-3 text-green-500"></i>Add Dashboard Logo</h3>
+                            <button onclick="openDLogoModal()" style="padding: 4px 10px; font-size: 15px;" class="margin-bottom: 20px margin: 5px 0 px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md flex items-center">+</button>
+                         </div>
+                         <div id="DLogoModal" class="modal">
+                            <div class="modal-content">
+                            <span class="close" onclick="closeDLogoModal()">&times;</span>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8"></div>
+                                    <div class="p-4 border border-gray-200 rounded-lg bg-gray-50">
+                                        <h4 class="text-xl font-semibold text-gray-700 mb-3">Dashboard Logo (Color, Transparent PNG)</h4>
+                                    <div class="mb-4">
+
+                                            <label for="dashboard-logo-upload" class="block text-gray-700 font-medium mb-2">Upload Image</label>
+                                            <input type="file" id="dashboard-logo-upload" accept="image/png" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200">
+                                    </div>
+                                    <div class="mb-4">
+                                            <label for="dashboard-logo-link" class="block text-gray-700 font-medium mb-2">Or Paste Image Link</label>
+                                            <input type="url" id="dashboard-logo-link" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" placeholder="https://example.com/logo.png">
+                                    </div>
+                                    <div class="flex justify-end">
+                                            <button id="save-dashboard-logo" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200 shadow-md flex items-center"><i class="fas fa-upload mr-2"></i>Save Dashboard Logo</button>
+                                    </div>
+                                    <div class="mt-4 text-center">
+                                            <p class="text-gray-600 mb-2">Current Dashboard Logo Preview:</p>
+                                            <img id="dashboard-logo-preview" src="https://placehold.co/100x100/000000/FFFFFF?text=LOGO" alt="Dashboard Logo Preview" class="mx-auto h-24 w-24 object-contain bg-white rounded-lg p-1 border border-gray-300">
+                                    </div>
+                                </div>
+                            </div>
+                         </div>
+
+                         <!--button3-->
+                         
+                        <div style="display: flex; align-items: flex-start; gap: 10px;">
+                            <h3 class="margin-left: 10px margin-top: 30px  margin-bottom: 10px   display: flex align-items: center gap: 10px text-2xl font-semibold text-gray-700 mb-6 flex items-center"><i class="fas fa-image mr-3 text-green-500"></i>Add Receipt Logo</h3>
+                            <button onclick="openRLogoModal()" style="padding: 4px 10px; font-size: 15px;" class="margin-bottom: 20px margin: 5px 0 px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md flex items-center">+</button>
+                        </div>
+                        <div id="RLogoModal" class="modal">
+                            <div class="modal-content">
+                            <span class="close" onclick="closeRLogoModal()">&times;</span>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8"></div>
+                                    <div class="p-4 border border-gray-200 rounded-lg bg-gray-50">
+                                        <h4 class="text-xl font-semibold text-gray-700 mb-3">Receipt Logo (B&W, Transparent PNG)</h4>
+                                        <div class="mb-4">
+                                            <label for="receipt-logo-upload" class="block text-gray-700 font-medium mb-2">Upload Image</label>
+                                            <input type="file" id="receipt-logo-upload" accept="image/png" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200">
+                                        </div>
+                                        <div class="mb-4">
+                                            <label for="receipt-logo-link" class="block text-gray-700 font-medium mb-2">Or Paste Image Link</label>
+                                            <input type="url" id="receipt-logo-link" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" placeholder="https://example.com/bw_logo.png">
+                                        </div>
+                                        <div class="flex justify-end">
+                                            <button id="save-receipt-logo" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200 shadow-md flex items-center"><i class="fas fa-upload mr-2"></i>Save Receipt Logo</button>
+                                        </div>
+                                        <div class="mt-4 text-center">
+                                            <p class="text-gray-600 mb-2">Current Receipt Logo Preview:</p>
+                                            <img id="receipt-logo-preview" src="https://placehold.co/100x100/000000/FFFFFF?text=LOGO" alt="Receipt Logo Preview" class="mx-auto h-24 w-24 object-contain bg-white rounded-lg p-1 border border-gray-300">
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                    
+                         
+                        <!--button4-->
+                         <div style="display: flex; align-items: flex-start; gap: 10px;">
+                            <h3 class="margin-left: 10px margin-top: 30px  margin-bottom: 10px   display: flex align-items: center gap: 10px text-2xl font-semibold text-gray-700 mb-6 flex items-center"><i class="fas fa-truck-ramp-box mr-3 text-purple-500"></i>Distribution Channels</h3>
+                            <button onclick="openDChannelsModal()" style="padding: 4px 10px; font-size: 15px;" class="margin-bottom: 20px margin: 5px 0 px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md flex items-center">+</button>
+                        </div>
+                        <div id="DChannelsModal" class="modal">
+                            <div class="modal-content">
+                            <span class="close" onclick="closeDChannelsModal()">&times;</span>
+                                <form id="add-distribution-channel-form" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                                    <div>
+                                        <label for="dist-channel-name" class="block text-gray-700 font-medium mb-2">Channel Name</label>
+                                        <input type="text" id="dist-channel-name" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" placeholder="e.g., Online Store, Branch A" required>
+                                    </div>
+                                    <div>
+                                        <label for="dist-channel-reg-no" class="block text-gray-700 font-medium mb-2">Registration No (Optional)</label>
+                                        <input type="text" id="dist-channel-reg-no" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" placeholder="Registration Number">
+                                    </div>
+                                    <div>
+                                        <label for="dist-channel-address" class="block text-gray-700 font-medium mb-2">Address</label>
+                                        <input type="text" id="dist-channel-address" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" placeholder="Channel Address" required>
+                                    </div>
+                                    <div>
+                                        <label for="dist-channel-hotline" class="block text-gray-700 font-medium mb-2">Hotline</label>
+                                        <input type="text" id="dist-channel-hotline" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" placeholder="Channel Hotline" required>
+                                    </div>
+                                    <div class="md:col-span-2">
+                                        <label for="dist-channel-receipt-logo-upload" class="block text-gray-700 font-medium mb-2">Receipt Logo (B&W, Transparent PNG) - Upload</label>
+                                        <input type="file" id="dist-channel-receipt-logo-upload" accept="image/png" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200">
+                                    </div>
+                                    <div class="md:col-span-2">
+                                        <label for="dist-channel-receipt-logo-link" class="block text-gray-700 font-medium mb-2">Or Paste Image Link</label>
+                                        <input type="url" id="dist-channel-receipt-logo-link" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" placeholder="https://example.com/channel_bw_logo.png">
+                                    </div>
+                                    <div class="md:col-span-2 flex justify-end">
+                                        <button type="submit" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200 shadow-md flex items-center"><i class="fas fa-plus mr-2"></i>Add Channel</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        
+    
+                        <h3 class="margin-left: 10px margin-top: 30px  margin-bottom: 10px   display: flex align-items: center gap: 10px text-2xl font-semibold text-gray-700 mb-6 flex items-center"><i class="fas fa-list-alt mr-3 text-orange-500"></i>Existing Channels</h3>
+                        <div class="overflow-x-auto rounded-lg shadow-md border border-gray-200">
+                        <!--button-->
+                        <button onclick="openChannelModal()" class="margin-bottom: 20px margin: 5px 0 px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md flex items-center">View Existing Channels</button>
+                        <div id="ChannelModal" class="modal">
+                            <div class="modal-content">
+                                <span class="close" onclick="closeChannelModal()">&times;</span>
+                                    <table class="min-w-full bg-white">
+                                        <thead class="bg-gray-100 border-b border-gray-200">
+                                            <tr>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Name</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Address</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Hotline</th>
+                                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="distribution-channels-list">
+                                            <tr><td colspan="4" class="text-center py-4 text-gray-500">No distribution channels added.</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="bg-gray-800 text-white p-4 text-center mt-auto">
+            <p>&copy; 2025 Offline POS System. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <div id="global-modal-container" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white p-8 rounded-xl shadow-2xl max-w-md w-full relative transform transition-all duration-300 scale-95 opacity-0" id="global-modal-content">
+            <button class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl" id="global-modal-close-btn">&times;</button>
+            <h3 id="global-modal-title" class="text-2xl font-bold text-gray-800 mb-4"></h3>
+            <p id="global-modal-message" class="text-gray-700 mb-6"></p>
+            <div id="global-modal-actions" class="flex justify-end space-x-4">
+                </div>
+        </div>
+    </div>
+
+    <div id="receipt-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white p-6 rounded-xl shadow-2xl max-w-sm w-full relative transform transition-all duration-300 scale-95 opacity-0" id="receipt-modal-content">
+            <button class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl" id="receipt-modal-close-btn">&times;</button>
+            <div id="printable-receipt" class="text-xs text-gray-800">
+                <div class="text-center mb-4">
+                    <img id="receipt-shop-logo" src="https://placehold.co/80x80/000000/FFFFFF?text=LOGO" alt="Shop Logo" class="mx-auto h-20 w-20 object-contain mb-2 bg-white p-1">
+                    <h4 id="receipt-shop-name" class="text-lg font-bold">Your Shop Name</h4>
+                    <p id="receipt-shop-address" class="text-xs">Shop Address</p>
+                    <p id="receipt-shop-tp" class="text-xs">TP: 000-0000000</p>
+                </div>
+                <div class="border-t border-dashed border-gray-400 my-4"></div>
+                <div class="mb-4">
+                    <p><strong>Bill ID:</strong> <span id="receipt-bill-id"></span></p>
+                    <p><strong>Date:</strong> <span id="receipt-date"></span></p>
+                    <p><strong>Time:</strong> <span id="receipt-time"></span></p>
+                    <p><strong>Customer:</strong> <span id="receipt-customer-name">Walking Customer</span></p>
+                    <p id="receipt-customer-tp-row" class="hidden"><strong>TP:</strong> <span id="receipt-customer-tp"></span></p>
+                    <p id="receipt-customer-address-row" class="hidden"><strong>Address:</strong> <span id="receipt-customer-address"></span></p>
+                </div>
+                <div class="border-t border-dashed border-gray-400 my-4"></div>
+                <table class="w-full mb-4">
+                    <thead>
+                        <tr>
+                            <th class="text-left">Item</th>
+                            <th class="text-right">Qty</th>
+                            <th class="text-right">Price</th>
+                            <th class="text-right">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="receipt-items">
+                        </tbody>
+                </table>
+                <div class="border-t border-dashed border-gray-400 my-4"></div>
+                <div class="text-right mb-2">
+                    <p>Sub Total: <span id="receipt-subtotal">LKR 0.00</span></p>
+                    <p>Discount: <span id="receipt-discount">LKR 0.00</span></p>
+                    <p class="text-base font-bold">Grand Total: <span id="receipt-grandtotal">LKR 0.00</span></p>
+                </div>
+                <div class="mb-4">
+                    <p>Payment Method: <span id="receipt-payment-method"></span></p>
+                    <p id="receipt-payment-ref-row" class="hidden">Reference: <span id="receipt-payment-ref"></span></p>
+                </div>
+                <div class="border-t border-dashed border-gray-400 my-4"></div>
+                <div class="text-center text-gray-600">
+                    <p>Thank you for your purchase!</p>
+                </div>
+            </div>
+            <div class="flex justify-center space-x-4 mt-6">
+                <button id="print-receipt-btn" class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-200 shadow-md flex items-center"><i class="fas fa-print mr-2"></i>Print</button>
+                <button id="close-receipt-modal-btn" class="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition duration-200 shadow-md flex items-center"><i class="fas fa-times mr-2"></i>Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="edit-credit-bill-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white p-8 rounded-xl shadow-2xl max-w-md w-full relative transform transition-all duration-300 scale-95 opacity-0" id="edit-credit-bill-modal-content">
+            <button class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl" id="edit-credit-bill-modal-close-btn">&times;</button>
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">Edit Credit Bill / Add Payment</h3>
+            <form id="edit-credit-bill-form" class="space-y-4">
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">Bill ID</label>
+                    <input type="text" id="edit-credit-bill-id" class="w-full p-3 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed" disabled>
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">Customer Name</label>
+                    <input type="text" id="edit-credit-bill-customer" class="w-full p-3 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed" disabled>
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">Total Amount</label>
+                    <input type="text" id="edit-credit-bill-total" class="w-full p-3 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed" disabled>
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">Paid Amount</label>
+                    <input type="text" id="edit-credit-bill-paid" class="w-full p-3 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed" disabled>
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">Due Amount</label>
+                    <input type="text" id="edit-credit-bill-due" class="w-full p-3 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed" disabled>
+                </div>
+                <div>
+                    <label for="edit-credit-bill-due-date" class="block text-gray-700 font-medium mb-2">Set New Due Date</label>
+                    <input type="date" id="edit-credit-bill-due-date" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200">
+                </div>
+                <div class="border-t pt-4 mt-4">
+                    <h4 class="text-xl font-semibold text-gray-700 mb-3">Add Installment Payment</h4>
+                    <div>
+                        <label for="installment-amount" class="block text-gray-700 font-medium mb-2">Payment Amount (LKR)</label>
+                        <input type="number" id="installment-amount" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" min="0" step="0.01" placeholder="Enter payment amount">
+                    </div>
+                    <div>
+                        <label for="installment-method" class="block text-gray-700 font-medium mb-2">Payment Method</label>
+                        <select id="installment-method" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200">
+                            <option value="cash">Cash</option>
+                            <option value="card">Card</option>
+                            <option value="cheque">Cheque</option>
+                            <option value="bank">Bank Transfer</option>
+                            <option value="online">Online Payment</option>
+                        </select>
+                    </div>
+                    <div id="installment-reference-container" class="hidden mt-2">
+                        <label for="installment-reference" class="block text-gray-700 font-medium mb-2">Reference No.</label>
+                        <input type="text" id="installment-reference" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" placeholder="Enter reference number">
+                    </div>
+                    <div id="installment-cheque-details-container" class="hidden mt-2 space-y-3">
+                        <div>
+                            <label for="installment-cheque-number" class="block text-gray-700 font-medium mb-2">Cheque Number</label>
+                            <input type="text" id="installment-cheque-number" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" placeholder="Cheque Number">
+                        </div>
+                        <div>
+                            <label for="installment-cheque-bank" class="block text-gray-700 font-medium mb-2">Bank</label>
+                            <input type="text" id="installment-cheque-bank" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200" placeholder="Bank Name">
+                        </div>
+                        <div>
+                            <label for="installment-cheque-due-date" class="block text-gray-700 font-medium mb-2">Due Date</label>
+                            <input type="date" id="installment-cheque-due-date" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-200">
+                        </div>
+                    </div>
+                    <button type="button" id="add-installment-btn" class="w-full px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-200 shadow-md mt-4 flex items-center justify-center"><i class="fas fa-money-bill-wave mr-2"></i>Add Payment</button>
+                </div>
+                <div class="flex justify-end space-x-4 mt-6">
+                    <button type="button" id="save-credit-bill-changes-btn" class="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-700 transition duration-200 shadow-md flex items-center"><i class="fas fa-save mr-2"></i>Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
