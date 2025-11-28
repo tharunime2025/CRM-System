@@ -1,0 +1,208 @@
+================================
+   CRM SYSTEM - CODE OVERVIEW
+================================
+
+1. Project Summary:
+This Customer Relationship Management (CRM) system allows users to manage customer records,
+view customer lists, perform basic search/filter operations, and simulate authentication.
+Built with HTML, CSS, and JavaScript, it is intended as a frontend demo 
+without backend/database integration.
+
+
+2. File Structure
+
+/CRM-project
+│
+├── index.html          → Main dashboard page
+├── login.html          → Welcome, login & registration page
+├── login.js            → Login functionality
+├── script.js           → All JavaScript functions for index.html (reports, popups, etc.)
+├── style.css           → Styles used across all pages
+
+
+3. Pages Description:
+
+- index.html
+  - Dashboard layout with side navigation bar and top navigation.
+  - CRUD functionality for customers.
+  - Export to PDF/Excel features.
+  - Buttons such as “Add Customer,” “View Reports,” etc.
+
+- login.html
+  - Contains UI for user sign-in and sign-up.
+  - Uses localStorage to store simple user data (email & password).
+  - On successful login, redirects to index.html.
+
+
+4. Technologies Used:
+
+- HTML → Structure and layout
+- CSS → Styling (flexbox, responsive design)
+- JavaScript →
+  - LocalStorage for mock authentication
+  - Page interactions and event handling
+  - Dynamic content loading
+
+
+5. Functional Components:
+
+- Login & Registration
+  - Simple form validation
+  - Stores credentials in localStorage
+
+- Dashboard
+  - Displays page heading, logout button
+  - Table or card view for customer records
+
+- Navigation
+  - Sidebar with page links
+  - Top bar with logout
+
+
+- Billing Page (5-Step Process):
+
+  1. Customer Details
+     - Customer Type, Name, Address, Phone Number
+
+  2. Distribution Channel
+     - Dropdown channel selection
+
+  3. Add Items
+     - Scan barcode or enter item code
+     - Item name
+     - Quantity
+
+  4. Shopping Cart
+     - Product name, quantity, unit price, total
+     - Subtotal, discount, tax, grand total
+
+  5. Payment Method
+     - Cash, Card, etc.
+     - Confirm Payment
+
+
+- Inventory Management
+
+  1. Add New Item
+     - Item Code / Barcode
+     - Item Name
+     - Description (optional)
+     - Unit Price (LKR)
+     - Initial Stock Quantity
+     - Threshold
+     - Save Item button
+
+  2. Current Inventory
+     - Shows all items in a popup window
+     - Item Code, Name, Price, Stock, Threshold, Actions
+
+
+- Customers Page
+
+  1. Add New Customer
+     - Customer ID (auto-generated)
+     - Name
+     - Address
+     - Telephone Number
+     - Credit Limit (LKR)
+     - Add Customer button
+
+  2. Registered Customers
+     - Displays all saved customers in a popup window
+       - ID, Name, Address, Telephone, Credit Limit, Actions
+
+
+- GRN Page
+
+  1. Add New GRN
+     - Supplier Name
+     - GRN Date
+     - Items Received
+
+  2. GRN History
+     - GRN ID, Date, Supplier, Items, Actions
+
+
+- Quotations
+
+  1. Create New Quotation
+     - Customer Name
+     - Quotation Date
+     - Items
+     - Add Item
+     - Generate Quotation
+
+  2. Quotation History
+     - Quotation ID, Date, Customer, Items, Total, Actions
+
+
+- Payment Records
+
+  1. Search Payments
+     - Start Date
+     - End Date
+     - Filter Payments
+
+  2. View All Payments
+     - Payment ID, Date, Bill ID, Amount (LKR), Method, Reference, Actions
+
+
+- Credit Bills Management
+
+  1. Filter Credit Bills
+     - Start Date
+     - End Date
+
+  2. View All Credit Bills
+     - Bill ID, Customer, Bill Date, Total, Paid, Due, Due Date, Status, Actions
+
+
+- Cheques Tracking System
+
+  1. Filter Cheques
+     - Start Date
+     - End Date
+
+  2. View All Cheques
+     - Cheque ID, Bill ID, Number, Bank, Amount (LKR), Due Date, Status, Actions
+
+
+- Reports
+
+  1. Generate Reports
+     - Start Date
+     - End Date
+
+  2. View & Download Reports
+
+
+- Settings
+
+  1. Shop Settings & Customization
+     - Shop Details
+     - Add Dashboard Logo
+     - Add Receipt Logo
+     - Add Distribution Channels
+
+  2. Existing Channels
+     - View channels in a popup window
+
+
+6. Notes for Developers:
+
+- No backend/database — data is stored only in browser localStorage
+- Use mock JSON files or hardcoded arrays to simulate data
+- Authentication is not encrypted or secure
+- Can be expanded by connecting to a backend
+
+
+7. Future Improvements:
+
+- Connect to a real backend with database support
+- Implement secure authentication 
+- Add role-based user access
+- Improve form validation and error messages
+
+
+
+
