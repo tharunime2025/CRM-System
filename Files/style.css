@@ -1,0 +1,436 @@
+/* style.css */
+
+/* Import Google Font - Inter */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+
+/* Apply Inter font and basic resets */
+body {
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    display: flex; /* Use flexbox for main layout */
+    min-height: 100vh; /* Ensure body takes full viewport height */
+}
+
+/* Ensure all elements use border-box for consistent sizing */
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+
+/* Sidebar Styling */
+.sidebar {
+    width: 256px; /* 64 * 4px = 256px */
+    flex-shrink: 0; /* Prevent sidebar from shrinking */
+    position: sticky; /* Make sidebar sticky */
+    top: 0; /* Stick to the top */
+    height: 100vh; /* Full viewport height */
+    overflow-y: auto; /* Enable scrolling for long menus */
+    transition: transform 0.3s ease-in-out; /* Smooth transition for responsive toggle */
+    z-index: 20; /* Ensure it's above other content */
+}
+
+/* Hide header on large screens (sidebar is visible) */
+body > .flex-grow > header {
+    display: none;
+}
+
+/* Responsive adjustments for sidebar */
+@media (max-width: 1023px) { /* Tailwind's 'lg' breakpoint is 1024px */
+    .sidebar {
+        position: fixed; /* Fixed position for mobile sidebar */
+        transform: translateX(-100%); /* Hide sidebar by default on small screens */
+    }
+    .sidebar.active {
+        transform: translateX(0); /* Show sidebar when active */
+    }
+    body > .flex-grow > header {
+        display: flex; /* Show a header for mobile to indicate app name */
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+    body {
+        flex-direction: column; /* Stack sidebar and main content vertically on small screens */
+    }
+    /* Main content should not have left margin on small screens when sidebar is hidden */
+    main {
+        margin-left: 0 !important;
+    }
+}
+
+/* Main content area styling for a wider feel */
+main {
+    max-width: 1440px; /* Set a max-width for a more widescreen content area */
+    width: 100%; /* Ensure it takes full width up to max-width */
+    margin-left: auto; /* Center the content within the available space */
+    margin-right: auto; /* Center the content within the available space */
+    padding: 1.5rem; /* Keep consistent padding */
+}
+
+/* Adjust main content for smaller screens to allow full width */
+@media (max-width: 1023px) {
+    main {
+        max-width: 100%; /* Allow full width on smaller screens */
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+
+/* Custom styles for main sections to handle transitions */
+.main-section {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.main-section.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Navigation button active state */
+.nav-btn.active {
+    background-color: rgba(255, 255, 255, 0.2); /* Slightly lighter blue for active state */
+    font-weight: 600;
+}
+
+/* Table styling for better readability */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0; /* Tailwind gray-200 */
+}
+
+th {
+    background-color: #f8f9fa; /* Tailwind gray-100 */
+    font-weight: 600;
+    color: #4a5568; /* Tailwind gray-700 */
+    text-transform: uppercase;
+    font-size: 0.875rem; /* Tailwind text-sm */
+}
+
+tbody tr:hover {
+    background-color: #f0f4f8; /* A lighter hover state */
+}
+
+/* Input and Select focus styles */
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: #8fb9fc; /* Tailwind emerald-500 */
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3); /* Tailwind emerald-500 with opacity */
+}
+
+/* Modal specific styles for animation */
+#global-modal-container,
+#receipt-modal,
+#edit-credit-bill-modal {
+    transition: opacity 0.3s ease-out;
+}
+
+#global-modal-content,
+#receipt-modal-content,
+#edit-credit-bill-modal-content {
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+}
+
+#global-modal-container.show #global-modal-content,
+#receipt-modal.show #receipt-modal-content,
+#edit-credit-bill-modal.show #edit-credit-bill-modal-content {
+    transform: scale(1);
+    opacity: 1;
+}
+
+/* Print specific styles for receipt */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    #receipt-modal, #receipt-modal * {
+        visibility: hidden; /* Hide the modal itself */
+    }
+    #printable-receipt, #printable-receipt * {
+        visibility: visible;
+    }
+    #printable-receipt {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 80mm; /* Standard thermal receipt width */
+        font-size: 10px; /* Adjust font size for thermal printer */
+        margin: 0 auto; /* Center on the page */
+        padding: 5mm; /* Add some padding */
+        box-shadow: none; /* Remove shadow for print */
+        border: none; /* Remove border for print */
+    }
+    /* Hide buttons and other non-receipt elements within the modal during print */
+    #receipt-modal-close-btn, #print-receipt-btn, #close-receipt-modal-btn {
+        display: none !important;
+    }
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.4);
+  z-index: 1000;
+}
+
+
+
+.modal-content {
+  background-color: white;
+  margin: 10% auto;
+  padding: 20px;
+  width: 80%;
+  border-radius: 5px;
+}
+
+.close {
+  float: right;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+
+
+/* Top Navigation Bar Styles */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.top-navbar {
+  height: 60px;
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+}
+
+.page-title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.search-box {
+  padding: 5px 10px;
+}
+
+
+/*login*/
+
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+
+* {
+  box-sizing: border-box;
+}
+
+body.body-login {
+  background:#FFFFFF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-family: 'Montserrat', sans-serif;
+  height: 100vh;
+  margin: -20px 0 50px;
+}
+
+h1 { font-weight: bold; margin: 0; }
+h2 { text-align: center; }
+p { font-size: 14px; font-weight: 100; line-height: 20px; letter-spacing: 0.5px; margin: 20px 0 30px; }
+span { font-size: 12px; }
+a { color: #333; font-size: 14px; text-decoration: none; margin: 15px 0; }
+
+button {
+  border-radius: 20px;
+  border: 1px solid #065f46;
+  background-color: #065f46;
+  color: #FFFFFF;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 12px 45px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: transform 80ms ease-in;
+}
+
+button:active { transform: scale(0.95); }
+button:focus { outline: none; }
+button.ghost { background-color: transparent; border-color: #FFFFFF; }
+
+form {
+  background-color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 50px;
+  height: 100%;
+  text-align: center;
+}
+
+textarea {
+  background-color: #eee;
+  border: none;
+  padding: 12px 15px;
+  margin: 8px 0;
+  width: 100%;
+
+
+
+}
+input {
+  background-color: #eee;
+  border: none;
+  padding: 12px 15px;
+  margin: 8px 0;
+  width: 100%;
+}
+
+.container {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 
+              0 10px 10px rgba(0,0,0,0.22);
+  position: relative;
+  overflow: hidden;
+  width: 768px;
+  max-width: 100%;
+  min-height: 480px;
+}
+
+/* FORM CONTAINERS */
+.form-container {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  transition: all 0.6s ease-in-out;
+}
+
+.sign-in-container {
+  left: 0;
+  width: 50%;
+  z-index: 2;
+}
+
+.sign-up-container {
+  left: 0;
+  width: 50%;
+  opacity: 0;
+  z-index: 1;
+  transform: translateX(0);
+}
+
+/* Right panel active */
+.container.right-panel-active .sign-in-container {
+  transform: translateX(100%);
+  opacity: 0;
+  z-index: 1;
+}
+
+.container.right-panel-active .sign-up-container {
+  transform: translateX(100%);
+  opacity: 1;
+  z-index: 5;
+  animation: show 0.6s;
+}
+
+@keyframes show {
+  0%, 49.99% { opacity: 0; z-index: 1; }
+  50%, 100% { opacity: 1; z-index: 5; }
+}
+
+/* OVERLAY */
+.overlay-container {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  transition: transform 0.6s ease-in-out;
+  z-index: 100;
+}
+
+.container.right-panel-active .overlay-container {
+  transform: translateX(-100%);
+}
+
+.overlay {
+  background: linear-gradient(to right, #065f46,#065f46 );
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 0 0;
+  color: #FFFFFF;
+  position: relative;
+  left: -100%;
+  height: 100%;
+  width: 200%;
+  transform: translateX(0);
+  transition: transform 0.6s ease-in-out;
+}
+
+.container.right-panel-active .overlay {
+  transform: translateX(50%);
+}
+
+.overlay-panel {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 40px;
+  text-align: center;
+  top: 0;
+  height: 100%;
+  width: 50%;
+  transform: translateX(0);
+  transition: transform 0.6s ease-in-out;
+}
+
+.overlay-left { transform: translateX(-20%); }
+.container.right-panel-active .overlay-left { transform: translateX(0); }
+
+.overlay-right { right: 0; transform: translateX(0); }
+.container.right-panel-active .overlay-right { transform: translateX(20%); }
+
+.social-container {
+  margin: 20px 0;
+}
+
+.social-container a {
+  border: 1px solid #DDDDDD;
+  border-radius: 50%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 5px;
+  height: 40px;
+  width: 40px;
+}
